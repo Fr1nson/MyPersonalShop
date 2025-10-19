@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Services - Профессиональный ремонт и обслуживание ПК</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --quantum-blue: #00ff88;
+            --nebula-purple: #ff00c8;
+            --cosmic-orange: #ff8800;
+            --stellar-cyan: #00e0ff;
+            --void-black: #0a0a0a;
+            --dark-matter: #1a1a2e;
+            --plasma-white: #f0f0f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--void-black);
+            color: var(--plasma-white);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0, 255, 136, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(255, 0, 200, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(0, 224, 255, 0.05) 0%, transparent 50%);
+            z-index: -2;
+        }
+
+        .quantum-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(rgba(0, 255, 136, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            animation: gridFlow 20s linear infinite;
+        }
+
+        @keyframes gridFlow {
+            0% { transform: translateY(0) translateX(0); }
+            100% { transform: translateY(50px) translateX(50px); }
+        }
+
+        .holographic-container {
+            position: relative;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .quantum-header {
+            position: relative;
+            padding: 40px 0;
+            text-align: center;
+            margin-bottom: 80px;
+            overflow: hidden;
+        }
+
+        .quantum-header::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--quantum-blue), transparent);
+            transform: translateY(-50%);
+            z-index: -1;
+        }
+
+        .quantum-title {
+            font-size: 6rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--quantum-blue), var(--nebula-purple), var(--cosmic-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            letter-spacing: -0.05em;
+            position: relative;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .quantum-subtitle {
+            font-size: 1.5rem;
+            opacity: 0.8;
+            max-width: 800px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        .category-section {
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 40px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            margin: 40px 0;
+        }
+
+        .category-title {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, var(--quantum-blue), var(--stellar-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+        }
+
+        .quantum-grid-layout {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .quantum-card {
+            position: relative;
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 30px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+        }
+
+        .quantum-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--quantum-blue), var(--nebula-purple), var(--cosmic-orange));
+            border-radius: 27px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .quantum-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(0, 255, 136, 0.5);
+        }
+
+        .quantum-card:hover::before {
+            opacity: 0.3;
+        }
+
+        .quantum-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, var(--quantum-blue), var(--stellar-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .quantum-card p {
+            opacity: 0.8;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        .price {
+            font-size: 1.4rem;
+            color: var(--quantum-blue);
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        .quantum-button {
+            background: linear-gradient(45deg, var(--quantum-blue), var(--nebula-purple));
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            font-weight: 600;
+            width: 100%;
+        }
+
+        .quantum-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .quantum-button:hover::before {
+            left: 100%;
+        }
+
+        .quantum-button:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.3);
+        }
+
+        .quantum-navbar {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 15px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .quantum-nav-item {
+            width: 12px;
+            height: 12px;
+            background: var(--quantum-blue);
+            border-radius: 50%;
+            margin: 8px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quantum-nav-item:hover {
+            transform: scale(1.5);
+            background: var(--nebula-purple);
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--quantum-blue);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); opacity: 0; }
+            50% { transform: translate(var(--tx), var(--ty)); opacity: 1; }
+        }
+
+        .quantum-footer {
+            text-align: center;
+            padding: 60px 0 40px;
+            margin-top: 80px;
+            position: relative;
+        }
+
+        .quantum-footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--stellar-cyan), transparent);
+        }
+
+        .quantum-footer-text {
+            opacity: 0.6;
+            font-size: 0.9rem;
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 1200px) {
+            .quantum-title {
+                font-size: 4.5rem;
+            }
+            
+            .quantum-subtitle {
+                font-size: 1.3rem;
+            }
+            
+            .quantum-grid-layout {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .quantum-title {
+                font-size: 4rem;
+            }
+            
+            .quantum-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .quantum-grid-layout {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+            }
+            
+            .category-title {
+                font-size: 2.2rem;
+            }
+            
+            .quantum-card {
+                padding: 25px;
+            }
+            
+            .quantum-card h3 {
+                font-size: 1.6rem;
+            }
+            
+            .price {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .quantum-title {
+                font-size: 3rem;
+            }
+            
+            .quantum-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .quantum-grid-layout {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .category-title {
+                font-size: 2rem;
+            }
+            
+            .quantum-card {
+                padding: 20px;
+            }
+            
+            .quantum-card h3 {
+                font-size: 1.5rem;
+            }
+            
+            .quantum-header {
+                padding: 30px 0;
+                margin-bottom: 60px;
+            }
+            
+            .quantum-navbar {
+                position: static;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                margin: 20px auto;
+                padding: 10px;
+            }
+            
+            .quantum-nav-item {
+                margin: 0 5px;
+            }
+            
+            .category-tabs {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .category-tab {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .quantum-title {
+                font-size: 2.5rem;
+            }
+            
+            .quantum-subtitle {
+                font-size: 1rem;
+            }
+            
+            .category-title {
+                font-size: 1.8rem;
+            }
+            
+            .quantum-card h3 {
+                font-size: 1.4rem;
+            }
+            
+            .price {
+                font-size: 1.2rem;
+            }
+            
+            .quantum-button {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .quantum-input {
+                padding: 12px 18px;
+                font-size: 0.9rem;
+            }
+            
+            .quantum-textarea {
+                height: 120px;
+            }
+            
+            .cart-actions {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .quantum-cart {
+                padding: 30px 20px;
+            }
+            
+            .quantum-footer {
+                padding: 40px 0 30px;
+            }
+        }
+
+        .quantum-form {
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 40px 30px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            margin: 40px 0;
+        }
+
+        .quantum-input {
+            width: 100%;
+            padding: 18px 25px;
+            background: rgba(10, 10, 10, 0.5);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 15px;
+            color: white;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .quantum-input:focus {
+            outline: none;
+            border-color: var(--quantum-blue);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+        }
+
+        .quantum-textarea {
+            height: 150px;
+            resize: none;
+        }
+
+        /* Квантовая корзина */
+        .quantum-cart {
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 40px 30px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            margin: 40px 0;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background: rgba(10, 10, 10, 0.3);
+            border-radius: 15px;
+            border-left: 3px solid var(--quantum-blue);
+        }
+
+        .cart-total {
+            text-align: right;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 20px 0;
+            color: var(--quantum-blue);
+        }
+
+        .cart-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .custom-requests {
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 30px 25px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            margin: 30px 0;
+        }
+
+        .custom-requests h3 {
+            font-size: 2.2rem;
+            margin-bottom: 25px;
+            background: linear-gradient(45deg, var(--cosmic-orange), var(--stellar-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .custom-requests-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-top: -15px;
+            margin-bottom: 15px;
+        }
+
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .category-tab {
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 50px;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .category-tab:hover {
+            background: rgba(26, 26, 46, 0.8);
+            transform: translateY(-3px);
+        }
+
+        .category-tab.active {
+            background: linear-gradient(45deg, var(--quantum-blue), var(--nebula-purple));
+            border-color: var(--quantum-blue);
+        }
+
+        .services-container {
+            display: none;
+        }
+
+        .services-container.active {
+            display: block;
+        }
+
+        .discount-badge {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-top: 8px;
+            display: inline-block;
+        }
+
+        .send-instructions {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="quantum-grid"></div>
+    
+    <div class="holographic-container">
+        <nav class="quantum-navbar">
+            <div class="quantum-nav-item" onclick="scrollToSection('services')"></div>
+            <div class="quantum-nav-item" onclick="scrollToSection('order')"></div>
+        </nav>
+
+        <header class="quantum-header scroll-reveal">
+            <h1 class="quantum-title">IT SERVICES</h1>
+            <p class="quantum-subtitle">Профессиональные услуги по ремонту и обслуживанию ПК. Доступные цены, высокое качество, надежность.</p>
+        </header>
+
+        <section id="services" class="scroll-reveal">
+            <h2 style="text-align: center; font-size: 2.8rem; margin-bottom: 40px; background: linear-gradient(45deg, var(--quantum-blue), var(--nebula-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Наши Услуги</h2>
+            
+            <div class="category-tabs">
+                <div class="category-tab active" onclick="showCategory('all')">Все услуги</div>
+                <div class="category-tab" onclick="showCategory('Сборка')">Сборка</div>
+                <div class="category-tab" onclick="showCategory('Ремонт')">Ремонт</div>
+                <div class="category-tab" onclick="showCategory('Обслуживание')">Обслуживание</div>
+            </div>
+            
+            <div id="servicesContainer">
+                <!-- Services will be loaded here -->
+            </div>
+        </section>
+
+        <section id="order" class="scroll-reveal">
+            <div class="quantum-cart">
+                <h3 style="font-size: 2.2rem; margin-bottom: 25px; background: linear-gradient(45deg, var(--cosmic-orange), var(--stellar-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Ваш Заказ</h3>
+                
+                <div id="cartItems">
+                    <p style="text-align: center; opacity: 0.6; padding: 40px 0;">Корзина пуста. Выберите услуги для заказа.</p>
+                </div>
+                
+                <div class="custom-requests">
+                    <h3>Дополнительные Пожелания</h3>
+                    <p class="custom-requests-subtitle">данный чек отправьте в чат у кого вы заказываете</p>
+                    <textarea id="customRequests" class="quantum-input quantum-textarea" placeholder="Укажите любые дополнительные пожелания, которые помогут нам лучше выполнить ваш заказ..."></textarea>
+                </div>
+                
+                <div class="cart-total" id="cartTotal">
+                    ИТОГО: 0 ₽
+                </div>
+                
+                <div class="cart-actions">
+                    <button class="quantum-button" onclick="clearCart()" style="background: linear-gradient(45deg, #6c757d, #495057);">Очистить</button>
+                    <button class="quantum-button" onclick="generateBill()" style="background: linear-gradient(45deg, #28a745, #20c997);">Сформировать Чек</button>
+                </div>
+                
+                <div class="send-instructions">
+                    Отправить по контактам, указанным в чеке
+                </div>
+            </div>
+        </section>
+
+        <footer class="quantum-footer scroll-reveal">
+            <p class="quantum-footer-text">© 2024 IT Services. Все права защищены. | Профессиональный ремонт ПК</p>
+        </footer>
+    </div>
+
+    <script>
+        // Услуги ПК с обновленными ценами
+        const services = [
+            // Сборка
+            {
+                id: 1,
+                name: "Сборка ПК",
+                description: "Полная сборка компьютера под ваши задачи - от бюджетных до игровых конфигураций",
+                price: 2000,
+                category: "Сборка"
+            },
+            
+            // Ремонт
+            {
+                id: 2,
+                name: "Диагностика ПК",
+                description: "Комплексная диагностика неисправностей компьютера",
+                price: 400,
+                category: "Ремонт"
+            },
+            {
+                id: 3,
+                name: "Замена комплектующих",
+                description: "Замена оперативной памяти, видеокарты, процессора и других компонентов",
+                price: 800,
+                category: "Ремонт"
+            },
+            {
+                id: 9,
+                name: "Восстановление данных",
+                description: "Восстановление потерянных данных с жестких дисков",
+                price: 1200,
+                category: "Ремонт"
+            },
+            
+            // Обслуживание
+            {
+                id: 4,
+                name: "Чистка от пыли",
+                description: "Полная чистка системного блока, замена термопасты",
+                price: 600,
+                category: "Обслуживание"
+            },
+            {
+                id: 5,
+                name: "Установка Windows",
+                description: "Установка и настройка операционной системы Windows",
+                price: 900,
+                category: "Обслуживание"
+            },
+            {
+                id: 6,
+                name: "Установка драйверов",
+                description: "Установка и обновление драйверов для всех компонентов ПК",
+                price: 250,
+                category: "Обслуживание"
+            },
+            {
+                id: 7,
+                name: "Установка антивируса",
+                description: "Установка и настройка антивирусного ПО",
+                price: 50,
+                category: "Обслуживание"
+            },
+            {
+                id: 8,
+                name: "Оптимизация системы",
+                description: "Ускорение работы ПК, очистка мусора, настройка автозагрузки",
+                price: 700,
+                category: "Обслуживание"
+            },
+            {
+                id: 10,
+                name: "Удаление вирусов",
+                description: "Полная очистка системы от вирусов и вредоносного ПО",
+                price: 800,
+                category: "Обслуживание"
+            },
+            {
+                id: 11,
+                name: "Настройка интернета",
+                description: "Настройка подключения к интернету и сетевых параметров",
+                price: 400,
+                category: "Обслуживание"
+            },
+            {
+                id: 12,
+                name: "Обновление ПО",
+                description: "Обновление операционной системы и установленных программ",
+                price: 500,
+                category: "Обслуживание"
+            }
+        ];
+
+        let cart = [];
+        let customRequests = '';
+        let currentCategory = 'all';
+
+        // Рендер услуг по категории
+        function renderServices(category = 'all') {
+            const container = document.getElementById('servicesContainer');
+            
+            let filteredServices = services;
+            if (category !== 'all') {
+                filteredServices = services.filter(service => service.category === category);
+            }
+            
+            let html = '';
+            if (filteredServices.length === 0) {
+                html = `<div class="category-section">
+                    <h3 class="category-title">${category === 'all' ? 'Все услуги' : category}</h3>
+                    <p style="text-align: center; opacity: 0.6; padding: 40px 0;">Нет услуг в этой категории</p>
+                </div>`;
+            } else {
+                html = `<div class="category-section">
+                    <h3 class="category-title">${category === 'all' ? 'Все услуги' : category}</h3>
+                    <div class="quantum-grid-layout">`;
+                
+                filteredServices.forEach(service => {
+                    html += `
+                        <div class="quantum-card">
+                            <h3>${service.name}</h3>
+                            <p>${service.description}</p>
+                            <div class="price">${service.price} ₽</div>
+                            ${service.price < 800 ? '<div class="discount-badge">Специальная цена</div>' : ''}
+                            <button class="quantum-button" onclick="addToCart(${service.id})">Добавить в заказ</button>
+                        </div>
+                    `;
+                });
+                
+                html += '</div></div>';
+            }
+            
+            container.innerHTML = html;
+        }
+
+        // Показать категорию
+        function showCategory(category) {
+            currentCategory = category;
+            
+            // Обновляем активные табы
+            const tabs = document.querySelectorAll('.category-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            renderServices(category);
+        }
+
+        // Добавить в корзину
+        function addToCart(serviceId) {
+            const service = services.find(s => s.id === serviceId);
+            if (service) {
+                cart.push(service);
+                updateCart();
+            }
+        }
+
+        // Обновить корзину
+        function updateCart() {
+            const cartItems = document.getElementById('cartItems');
+            const totalElement = document.getElementById('cartTotal');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p style="text-align: center; opacity: 0.6; padding: 40px 0;">Корзина пуста. Выберите услуги для заказа.</p>';
+                totalElement.textContent = 'ИТОГО: 0 ₽';
+                return;
+            }
+            
+            let cartHTML = '';
+            let total = 0;
+            
+            cart.forEach((item, index) => {
+                cartHTML += `
+                    <div class="cart-item">
+                        <div>
+                            <strong>${item.name}</strong><br>
+                            <small style="opacity: 0.7;">${item.category}</small>
+                        </div>
+                        <div style="text-align: right;">
+                            <div>${item.price} ₽</div>
+                            <button onclick="removeFromCart(${index})" style="background: #dc3545; border: none; color: white; padding: 5px 12px; border-radius: 20px; cursor: pointer; margin-top: 5px; font-size: 0.8rem;">Удалить</button>
+                        </div>
+                    </div>
+                `;
+                total += item.price;
+            });
+            
+            cartItems.innerHTML = cartHTML;
+            totalElement.textContent = `ИТОГО: ${total} ₽`;
+        }
+
+        // Удалить из корзины
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        // Очистить корзину
+        function clearCart() {
+            cart = [];
+            updateCart();
+        }
+
+        // Сгенерировать чек
+        function generateBill() {
+            if (cart.length === 0) {
+                alert('Корзина пуста! Добавьте услуги в заказ.');
+                return;
+            }
+            
+            // Получаем текущую дату и время
+            const now = new Date();
+            const date = now.toLocaleDateString('ru-RU');
+            const time = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+            
+            // Получаем дополнительные пожелания
+            customRequests = document.getElementById('customRequests').value;
+            
+            // Формируем содержимое чека
+            let billContent = 'СЧЕТ НА УСЛУГИ\n\n';
+            billContent += `Дата: ${date}\n`;
+            billContent += `Время: ${time}\n`;
+            billContent += '========================================\n\n';
+            
+            let total = 0;
+            cart.forEach(item => {
+                billContent += `${item.name}\n`;
+                billContent += `Цена: ${item.price} ₽\n\n`;
+                total += item.price;
+            });
+            
+            if (customRequests) {
+                billContent += 'Дополнительные пожелания:\n';
+                billContent += `${customRequests}\n\n`;
+            }
+            
+            billContent += '========================================\n';
+            billContent += `ОБЩАЯ СУММА: ${total} ₽\n\n`;
+            billContent += 'Спасибо за ваш заказ в IT Services!\n';
+            billContent += 'Для уточнения деталов обращайтесь:\n';
+            billContent += 'Тел: +7 (XXX) XXX-XX-XX\n';
+            billContent += 'Telegram: @it_services\n';
+            billContent += 'Email: info@itservices.ru';
+
+            // Создаем и скачиваем файл
+            const blob = new Blob([billContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `счет_на_услуги_${date.replace(/\./g, '-')}_${time.replace(/:/g, '-')}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Создание частиц
+        function createParticles() {
+            const container = document.body;
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const startX = Math.random() * window.innerWidth;
+                const startY = Math.random() * window.innerHeight;
+                
+                const tx = (Math.random() - 0.5) * 200;
+                const ty = (Math.random() - 0.5) * 200;
+                
+                particle.style.left = `${startX}px`;
+                particle.style.top = `${startY}px`;
+                particle.style.setProperty('--tx', `${tx}px`);
+                particle.style.setProperty('--ty', `${ty}px`);
+                
+                const colors = ['#00ff88', '#ff00c8', '#ff8800', '#00e0ff'];
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                particle.style.animationDelay = `${Math.random() * 6}s`;
+                particle.style.animationDuration = `${3 + Math.random() * 6}s`;
+                
+                container.appendChild(particle);
+            }
+        }
+
+        // Анимация при скролле
+        function revealOnScroll() {
+            const elements = document.querySelectorAll('.scroll-reveal');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        // Навигация
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            renderServices('all');
+            createParticles();
+            window.addEventListener('scroll', revealOnScroll);
+            revealOnScroll();
+            
+            const buttons = document.querySelectorAll('.quantum-button');
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+        });
+
+        // Интерактивный фон
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            document.body.style.backgroundPosition = `${x * 100}% ${y * 100}%`;
+        });
+    </script>
+</body>
+</html>
