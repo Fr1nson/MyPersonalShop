@@ -1,1005 +1,931 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IT Services - Профессиональный ремонт и обслуживание ПК</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IT Services — Оформление заказа</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--quantum-blue:#00ff88;
+--nebula-purple:#ff00c8;
+--cosmic-orange:#ff8800;
+--void-black:#0a0a0a;
+--plasma-white:#f0f0f0;
+}
+body{
+font-family:'Inter',sans-serif;
+background:var(--void-black);
+color:var(--plasma-white);
+overflow-x:hidden;
+min-height:100vh;
+position:relative;
+}
+/* фон */
+body::before{
+content:'';
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle at 10% 20%,rgba(0,255,136,.15)0%,transparent40%),
+radial-gradient(circle at 90% 80%,rgba(255,0,200,.15)0%,transparent40%),
+radial-gradient(circle at 50% 50%,rgba(0,224,255,.08)0%,transparent60%);
+animation:bgMove 25s ease-in-out infinite alternate;
+z-index:-3;
+}
+@keyframes bgMove{
+0%{background-position:0%0%,100%100%,50%50%}
+100%{background-position:50%100%,0%0%,60%40%}
+}
+/* частицы */
+.particles{position:fixed;inset:0;overflow:hidden;z-index:-2;pointer-events:none}
+.particle{position:absolute;width:6px;height:6px;border-radius:50%;opacity:.7;animation:floatParticle 20s linear infinite}
+@keyframes floatParticle{
+0%{transform:translateY(100vh)scale(.8);opacity:0}
+10%,90%{opacity:1}
+100%{transform:translateY(-10vh)scale(1.2);opacity:0}
+}
+.holographic-container{max-width:1600px;margin:0 auto;padding:20px;position:relative}
+.quantum-header{text-align:center;padding:60px 0 40px;position:relative}
+.quantum-title{
+font-size:5rem;font-weight:800;
+background:linear-gradient(45deg,var(--quantum-blue),var(--nebula-purple),var(--cosmic-orange));
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+text-shadow:0 0 25px rgba(0,255,136,.3);margin-bottom:20px
+}
+.quantum-subtitle{font-size:1.4rem;opacity:.8;font-weight:300}
+/* категории */
+.sticky-tabs{
+display:flex;justify-content:center;flex-wrap:wrap;gap:15px;
+margin:50px 0;position:sticky;top:0;z-index:999;
+background:rgba(10,10,20,.85);backdrop-filter:blur(20px);
+padding:15px 10px;border-bottom:1px solid rgba(0,255,136,.25)
+}
+.category-tab{
+padding:12px 28px;border-radius:50px;
+background:rgba(26,26,46,.6);
+border:1px solid rgba(0,255,136,.25);
+font-size:1.1rem;cursor:pointer;
+transition:.3s
+}
+.category-tab:hover{transform:translateY(-3px);background:rgba(26,26,46,.8)}
+.category-tab.active{background:linear-gradient(45deg,var(--quantum-blue),var(--nebula-purple));border-color:var(--quantum-blue)}
+.services-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:30px;padding-bottom:150px
+}
+.service-card{
+background:rgba(26,26,46,.6);backdrop-filter:blur(20px);
+border:1px solid rgba(0,255,136,.2);
+border-radius:20px;padding:30px;text-align:center;
+transition:.4s;opacity:0;transform:translateY(30px)
+}
+.service-card.visible{opacity:1;transform:translateY(0)}
+.service-card:hover{border-color:var(--quantum-blue);box-shadow:0 0 20px rgba(0,255,136,.15);transform:translateY(-5px)}
+.service-icon{font-size:2.5rem;margin-bottom:10px;color:var(--quantum-blue)}
+.service-title{font-size:1.3rem;font-weight:600;margin-bottom:10px}
+.service-desc{opacity:.75;margin-bottom:15px}
+.service-price{font-weight:600;color:var(--quantum-blue);margin-bottom:10px}
+.add-btn{
+background:linear-gradient(45deg,var(--quantum-blue),var(--nebula-purple));
+border:none;color:#000;font-weight:600;padding:10px 20px;
+border-radius:30px;cursor:pointer;transition:.3s
+}
+.add-btn:hover{opacity:.85;transform:scale(1.05)}
+/* корзина */
+.cart-btn{
+position:fixed;right:25px;bottom:25px;
+background:linear-gradient(45deg,var(--quantum-blue),var(--nebula-purple));
+color:#000;border:none;border-radius:50%;width:65px;height:65px;
+font-size:1.8rem;cursor:pointer;z-index:1000;box-shadow:0 0 20px rgba(0,255,136,.3)
+}
+.cart-count{
+position:absolute;top:8px;right:10px;background:#ff005c;color:#fff;
+border-radius:50%;padding:2px 7px;font-size:.8rem;font-weight:700
+}
+.cart-panel{
+position:fixed;right:-400px;top:0;height:100%;width:350px;
+background:rgba(10,10,20,.95);backdrop-filter:blur(25px);
+border-left:1px solid rgba(0,255,136,.25);
+transition:.4s;z-index:1100;padding:20px;overflow-y:auto
+}
+.cart-panel.open{right:0}
+.cart-header{
+display:flex;justify-content:space-between;align-items:center;
+margin-bottom:20px;
+}
+.cart-header h2{margin:0;}
+.close-cart{
+background:none;border:none;color:var(--quantum-blue);
+font-size:1.5rem;cursor:pointer;transition:.3s;
+}
+.close-cart:hover{color:var(--nebula-purple);transform:scale(1.2);}
+.cart-items{display:flex;flex-direction:column;gap:15px}
+.cart-item{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(0,255,136,.2);padding-bottom:8px}
+.cart-item span{font-size:.95rem}
+.remove{color:#ff005c;cursor:pointer}
+.total{margin-top:20px;text-align:right;font-size:1.1rem}
 
-        :root {
-            --quantum-blue: #00ff88;
-            --nebula-purple: #ff00c8;
-            --cosmic-orange: #ff8800;
-            --stellar-cyan: #00e0ff;
-            --void-black: #0a0a0a;
-            --dark-matter: #1a1a2e;
-            --plasma-white: #f0f0f0;
-        }
+/* Дополнительные пожелания */
+.notes-section {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(0,255,136,.2);
+}
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--void-black);
-            color: var(--plasma-white);
-            overflow-x: hidden;
-            min-height: 100vh;
-            position: relative;
-        }
+.notes-section h3 {
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(0, 255, 136, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(255, 0, 200, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 50% 50%, rgba(0, 224, 255, 0.05) 0%, transparent 50%);
-            z-index: -2;
-        }
+.notes-section textarea {
+  width: 100%;
+  height: 80px;
+  background: rgba(26,26,46,.6);
+  border: 1px solid rgba(0,255,136,.25);
+  border-radius: 10px;
+  color: var(--plasma-white);
+  padding: 10px;
+  resize: vertical;
+  font-family: 'Inter', sans-serif;
+}
 
-        .quantum-grid {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                linear-gradient(rgba(0, 255, 136, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 136, 0.02) 1px, transparent 1px);
-            background-size: 50px 50px;
-            z-index: -1;
-            animation: gridFlow 20s linear infinite;
-        }
+.order-btn{
+width:100%;margin-top:15px;padding:10px;
+background:linear-gradient(45deg,var(--quantum-blue),var(--nebula-purple));
+border:none;border-radius:30px;font-weight:700;cursor:pointer
+}
+/* окно заказа */
+.modal{
+position:fixed;top:0;left:0;width:100%;height:100%;
+background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:1200
+}
+.modal.open{display:flex}
+.modal-content{
+background:rgba(26,26,46,.95);border-radius:20px;
+padding:30px;width:90%;max-width:500px;
+border:1px solid rgba(0,255,136,.3);backdrop-filter:blur(20px);
+position:relative;
+animation:fadeIn .4s ease;
+box-shadow: 0 0 40px rgba(0,255,136,.2);
+}
+@keyframes fadeIn{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-content h3{text-align:center;margin-bottom:15px}
+.input-group {
+  margin-bottom: 15px;
+}
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+.modal-content input{
+width:100%;padding:10px;border-radius:10px;border:none;
+background: rgba(10,10,20,.7);
+color: var(--plasma-white);
+border: 1px solid rgba(0,255,136,.2);
+font-family: 'Inter', sans-serif;
+}
+.modal-content input:focus {
+  outline: none;
+  border-color: var(--quantum-blue);
+  box-shadow: 0 0 0 2px rgba(0,255,136,.2);
+}
+.modal-content button{
+width:100%;padding:10px;margin-top:10px;border:none;border-radius:20px;
+background:linear-gradient(45deg,var(--quantum-blue),var(--nebula-purple));
+font-weight:700;cursor:pointer;
+transition: all 0.3s;
+}
+.modal-content button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,255,136,.3);
+}
 
-        @keyframes gridFlow {
-            0% { transform: translateY(0) translateX(0); }
-            100% { transform: translateY(50px) translateX(50px); }
-        }
+/* Стили для красивого чека */
+.receipt-container {
+  margin-top:15px;
+  background: rgba(10,10,20,.7);
+  padding: 20px;
+  border-radius: 15px;
+  border: 1px solid rgba(0,255,136,.2);
+  font-family: 'Inter', sans-serif;
+}
 
-        .holographic-container {
-            position: relative;
-            max-width: 1600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+.receipt-header {
+  text-align: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(0,255,136,.3);
+}
 
-        .quantum-header {
-            position: relative;
-            padding: 40px 0;
-            text-align: center;
-            margin-bottom: 80px;
-            overflow: hidden;
-        }
+.receipt-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+  background: linear-gradient(45deg, var(--quantum-blue), var(--nebula-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-        .quantum-header::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--quantum-blue), transparent);
-            transform: translateY(-50%);
-            z-index: -1;
-        }
+.receipt-subtitle {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
 
-        .quantum-title {
-            font-size: 6rem;
-            font-weight: 800;
-            background: linear-gradient(45deg, var(--quantum-blue), var(--nebula-purple), var(--cosmic-orange));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 20px;
-            letter-spacing: -0.05em;
-            position: relative;
-            text-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
-        }
+.receipt-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+}
 
-        .quantum-subtitle {
-            font-size: 1.5rem;
-            opacity: 0.8;
-            max-width: 800px;
-            margin: 0 auto;
-            font-weight: 300;
-        }
+.receipt-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--quantum-blue), transparent);
+  margin: 15px 0;
+}
 
-        .category-section {
-            background: rgba(26, 26, 46, 0.6);
-            backdrop-filter: blur(20px);
-            border-radius: 25px;
-            padding: 40px;
-            border: 1px solid rgba(0, 255, 136, 0.2);
-            margin: 40px 0;
-        }
+.receipt-items {
+  margin-bottom: 15px;
+}
 
-        .category-title {
-            font-size: 2.5rem;
-            margin-bottom: 30px;
-            background: linear-gradient(45deg, var(--quantum-blue), var(--stellar-cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-align: center;
-        }
+.receipt-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed rgba(255,255,255,.1);
+}
 
-        .quantum-grid-layout {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 30px;
-        }
+.item-name {
+  flex: 1;
+}
 
-        .quantum-card {
-            position: relative;
-            background: rgba(26, 26, 46, 0.6);
-            backdrop-filter: blur(20px);
-            border-radius: 25px;
-            padding: 30px;
-            border: 1px solid rgba(0, 255, 136, 0.2);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            overflow: hidden;
-        }
+.item-price {
+  font-weight: 600;
+  color: var(--quantum-blue);
+}
 
-        .quantum-card::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, var(--quantum-blue), var(--nebula-purple), var(--cosmic-orange));
-            border-radius: 27px;
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
+.receipt-notes {
+  margin: 15px 0;
+  padding: 10px;
+  background: rgba(0,255,136,.05);
+  border-radius: 8px;
+  border-left: 3px solid var(--quantum-blue);
+}
 
-        .quantum-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            border-color: rgba(0, 255, 136, 0.5);
-        }
+.notes-title {
+  font-weight: 600;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+}
 
-        .quantum-card:hover::before {
-            opacity: 0.3;
-        }
+.notes-content {
+  font-style: italic;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
 
-        .quantum-card h3 {
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-            background: linear-gradient(45deg, var(--quantum-blue), var(--stellar-cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+.receipt-total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 2px solid rgba(0,255,136,.3);
+  font-weight: bold;
+  font-size: 1.1rem;
+}
 
-        .quantum-card p {
-            opacity: 0.8;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            font-size: 1rem;
-        }
+.receipt-footer {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(0,255,136,.2);
+  text-align: center;
+  font-size: 0.85rem;
+  opacity: 0.8;
+  line-height: 1.4;
+}
 
-        .price {
-            font-size: 1.4rem;
-            color: var(--quantum-blue);
-            margin: 15px 0;
-            font-weight: bold;
-        }
+.telegram-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 20px;
+  background: linear-gradient(45deg, #0088cc, #00aced);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s;
+}
 
-        .quantum-button {
-            background: linear-gradient(45deg, var(--quantum-blue), var(--nebula-purple));
-            border: none;
-            color: white;
-            padding: 12px 25px;
-            border-radius: 50px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            font-weight: 600;
-            width: 100%;
-        }
+.telegram-btn:hover {
+  background: linear-gradient(45deg, #0077b5, #0095d9);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,136,204,.3);
+}
 
-        .quantum-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
+.success-message {
+  text-align: center;
+  margin-top: 15px;
+  padding: 12px;
+  background: rgba(0,255,136,.1);
+  border-radius: 10px;
+  border: 1px solid rgba(0,255,136,.3);
+  color: var(--quantum-blue);
+  font-size: 0.9rem;
+}
 
-        .quantum-button:hover::before {
-            left: 100%;
-        }
+.instruction {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 0.85rem;
+  opacity: 0.7;
+  line-height: 1.4;
+}
 
-        .quantum-button:hover {
-            transform: scale(1.03);
-            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.3);
-        }
+.order-form {
+  transition: all 0.3s ease;
+}
 
-        .quantum-navbar {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            background: rgba(26, 26, 46, 0.8);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 15px;
-            border: 1px solid rgba(0, 255, 136, 0.2);
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-        }
+.order-form.hidden {
+  display: none;
+}
 
-        .quantum-nav-item {
-            width: 12px;
-            height: 12px;
-            background: var(--quantum-blue);
-            border-radius: 50%;
-            margin: 8px 0;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+.receipt-section {
+  display: none;
+}
 
-        .quantum-nav-item:hover {
-            transform: scale(1.5);
-            background: var(--nebula-purple);
-        }
+.receipt-section.visible {
+  display: block;
+  animation: fadeIn 0.5s ease;
+}
 
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--quantum-blue);
-            border-radius: 50%;
-            pointer-events: none;
-            animation: float 6s infinite ease-in-out;
-        }
+.format-hint {
+  font-size: 0.75rem;
+  opacity: 0.6;
+  margin-top: 3px;
+  margin-left: 5px;
+}
 
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0); opacity: 0; }
-            50% { transform: translate(var(--tx), var(--ty)); opacity: 1; }
-        }
-
-        .quantum-footer {
-            text-align: center;
-            padding: 60px 0 40px;
-            margin-top: 80px;
-            position: relative;
-        }
-
-        .quantum-footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--stellar-cyan), transparent);
-        }
-
-        .quantum-footer-text {
-            opacity: 0.6;
-            font-size: 0.9rem;
-        }
-
-        .scroll-reveal {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 0.8s ease;
-        }
-
-        .scroll-reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Адаптивность */
-        @media (max-width: 1200px) {
-            .quantum-title {
-                font-size: 4.5rem;
-            }
-            
-            .quantum-subtitle {
-                font-size: 1.3rem;
-            }
-            
-            .quantum-grid-layout {
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                gap: 20px;
-            }
-        }
-
-        @media (max-width: 992px) {
-            .quantum-title {
-                font-size: 4rem;
-            }
-            
-            .quantum-subtitle {
-                font-size: 1.2rem;
-            }
-            
-            .quantum-grid-layout {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 20px;
-            }
-            
-            .category-title {
-                font-size: 2.2rem;
-            }
-            
-            .quantum-card {
-                padding: 25px;
-            }
-            
-            .quantum-card h3 {
-                font-size: 1.6rem;
-            }
-            
-            .price {
-                font-size: 1.3rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .quantum-title {
-                font-size: 3rem;
-            }
-            
-            .quantum-subtitle {
-                font-size: 1.1rem;
-            }
-            
-            .quantum-grid-layout {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            .category-title {
-                font-size: 2rem;
-            }
-            
-            .quantum-card {
-                padding: 20px;
-            }
-            
-            .quantum-card h3 {
-                font-size: 1.5rem;
-            }
-            
-            .quantum-header {
-                padding: 30px 0;
-                margin-bottom: 60px;
-            }
-            
-            .quantum-navbar {
-                position: static;
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                margin: 20px auto;
-                padding: 10px;
-            }
-            
-            .quantum-nav-item {
-                margin: 0 5px;
-            }
-            
-            .category-tabs {
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-            
-            .category-tab {
-                padding: 12px 20px;
-                font-size: 1rem;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .quantum-title {
-                font-size: 2.5rem;
-            }
-            
-            .quantum-subtitle {
-                font-size: 1rem;
-            }
-            
-            .category-title {
-                font-size: 1.8rem;
-            }
-            
-            .quantum-card h3 {
-                font-size: 1.4rem;
-            }
-            
-            .price {
-                font-size: 1.2rem;
-            }
-            
-            .quantum-button {
-                padding: 10px 20px;
-                font-size: 0.9rem;
-            }
-            
-            .quantum-input {
-                padding: 12px 18px;
-                font-size: 0.9rem;
-            }
-            
-            .quantum-textarea {
-                height: 120px;
-            }
-            
-            .cart-actions {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .quantum-cart {
-                padding: 30px 20px;
-            }
-            
-            .quantum-footer {
-                padding: 40px 0 30px;
-            }
-        }
-
-        .quantum-form {
-            background: rgba(26, 26, 46, 0.6);
-            backdrop-filter: blur(20px);
-            border-radius: 25px;
-            padding: 40px 30px;
-            border: 1px solid rgba(0, 255, 136, 0.2);
-            margin: 40px 0;
-        }
-
-        .quantum-input {
-            width: 100%;
-            padding: 18px 25px;
-            background: rgba(10, 10, 10, 0.5);
-            border: 1px solid rgba(0, 255, 136, 0.2);
-            border-radius: 15px;
-            color: white;
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .quantum-input:focus {
-            outline: none;
-            border-color: var(--quantum-blue);
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
-        }
-
-        .quantum-textarea {
-            height: 150px;
-            resize: none;
-        }
-
-        /* Квантовая корзина */
-        .quantum-cart {
-            background: rgba(26, 26, 46, 0.6);
-            backdrop-filter: blur(20px);
-            border-radius: 25px;
-            padding: 40px 30px;
-            border: 1px solid rgba(0, 255, 136, 0.2);
-            margin: 40px 0;
-        }
-
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            margin: 10px 0;
-            background: rgba(10, 10, 10, 0.3);
-            border-radius: 15px;
-            border-left: 3px solid var(--quantum-blue);
-        }
-
-        .cart-total {
-            text-align: right;
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin: 20px 0;
-            color: var(--quantum-blue);
-        }
-
-        .cart-actions {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-        }
-
-        .custom-requests {
-            background: rgba(26, 26, 46, 0.6);
-            backdrop-filter: blur(20px);
-            border-radius: 25px;
-            padding: 30px 25px;
-            border: 1px solid rgba(0, 255, 136, 0.2);
-            margin: 30px 0;
-        }
-
-        .custom-requests h3 {
-            font-size: 2.2rem;
-            margin-bottom: 25px;
-            background: linear-gradient(45deg, var(--cosmic-orange), var(--stellar-cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .category-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-
-        .category-tab {
-            background: rgba(26, 26, 46, 0.6);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 255, 136, 0.2);
-            border-radius: 50px;
-            padding: 12px 25px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .category-tab:hover {
-            background: rgba(26, 26, 46, 0.8);
-            transform: translateY(-3px);
-        }
-
-        .category-tab.active {
-            background: linear-gradient(45deg, var(--quantum-blue), var(--nebula-purple));
-            border-color: var(--quantum-blue);
-        }
-
-        .services-container {
-            display: none;
-        }
-
-        .services-container.active {
-            display: block;
-        }
-
-        .discount-badge {
-            background: linear-gradient(45deg, #ff416c, #ff4b2b);
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            margin-top: 8px;
-            display: inline-block;
-        }
-
-        .send-instructions {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 0.9rem;
-            opacity: 0.7;
-        }
-    </style>
+@media(max-width:480px){.quantum-title{font-size:3rem}}
+</style>
 </head>
 <body>
-    <div class="quantum-grid"></div>
+<div class="particles" id="particles"></div>
+<div class="holographic-container">
+<header class="quantum-header">
+<h1 class="quantum-title">IT SERVICES</h1>
+<p class="quantum-subtitle">Профессиональные услуги по ремонту и обслуживанию ПК</p>
+</header>
+
+<div class="sticky-tabs">
+<div class="category-tab active" onclick="showCategory('all')">Все услуги</div>
+<div class="category-tab" onclick="showCategory('Сборка')">Сборка</div>
+<div class="category-tab" onclick="showCategory('Ремонт')">Ремонт</div>
+<div class="category-tab" onclick="showCategory('Обслуживание')">Обслуживание</div>
+<div class="category-tab" onclick="showCategory('Дополнительно')">Дополнительно</div>
+</div>
+
+<section class="services-grid" id="servicesContainer">
+<!-- Услуги будут добавлены через JavaScript -->
+</section>
+</div>
+
+<!-- кнопка и панель корзины -->
+<button class="cart-btn" id="cartBtn">🛒<span class="cart-count" id="cartCount">0</span></button>
+<div class="cart-panel" id="cartPanel">
+<div class="cart-header">
+<h2>Ваш чек</h2>
+<button class="close-cart" id="closeCart">✖</button>
+</div>
+<div class="cart-items" id="cartItems"></div>
+<div class="total" id="total">Итого: 0 ₽</div>
+<div class="notes-section">
+  <h3>Дополнительные пожелания</h3>
+  <textarea id="customerNotes" placeholder="Укажите здесь ваши пожелания, особые требования или комментарии к заказу..."></textarea>
+</div>
+<button class="order-btn" id="orderBtn">Оформить заказ</button>
+</div>
+
+<!-- модальное окно -->
+<div class="modal" id="modal">
+<div class="modal-content">
+  <div class="order-form" id="orderForm">
+    <h3>Оформление заказа</h3>
     
-    <div class="holographic-container">
-        <nav class="quantum-navbar">
-            <div class="quantum-nav-item" onclick="scrollToSection('services')"></div>
-            <div class="quantum-nav-item" onclick="scrollToSection('order')"></div>
-        </nav>
-
-        <header class="quantum-header scroll-reveal">
-            <h1 class="quantum-title">IT SERVICES</h1>
-            <p class="quantum-subtitle">Профессиональные услуги по ремонту и обслуживанию ПК. Доступные цены, высокое качество, надежность.</p>
-        </header>
-
-        <section id="services" class="scroll-reveal">
-            <h2 style="text-align: center; font-size: 2.8rem; margin-bottom: 40px; background: linear-gradient(45deg, var(--quantum-blue), var(--nebula-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Наши Услуги</h2>
-            
-            <div class="category-tabs">
-                <div class="category-tab active" onclick="showCategory('all')">Все услуги</div>
-                <div class="category-tab" onclick="showCategory('Сборка')">Сборка</div>
-                <div class="category-tab" onclick="showCategory('Ремонт')">Ремонт</div>
-                <div class="category-tab" onclick="showCategory('Обслуживание')">Обслуживание</div>
-            </div>
-            
-            <div id="servicesContainer">
-                <!-- Services will be loaded here -->
-            </div>
-        </section>
-
-        <section id="order" class="scroll-reveal">
-            <div class="quantum-cart">
-                <h3 style="font-size: 2.2rem; margin-bottom: 25px; background: linear-gradient(45deg, var(--cosmic-orange), var(--stellar-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Ваш Заказ</h3>
-                
-                <div id="cartItems">
-                    <p style="text-align: center; opacity: 0.6; padding: 40px 0;">Корзина пуста. Выберите услуги для заказа.</p>
-                </div>
-                
-                <div class="custom-requests">
-                    <h3>Дополнительные Пожелания</h3>
-                    <textarea id="customRequests" class="quantum-input quantum-textarea" placeholder="Укажите любые дополнительные пожелания, которые помогут нам лучше выполнить ваш заказ..."></textarea>
-                </div>
-                
-                <div class="cart-total" id="cartTotal">
-                    ИТОГО: 0 ₽
-                </div>
-                
-                <div class="cart-actions">
-                    <button class="quantum-button" onclick="clearCart()" style="background: linear-gradient(45deg, #6c757d, #495057);">Очистить</button>
-                    <button class="quantum-button" onclick="generateBill()" style="background: linear-gradient(45deg, #28a745, #20c997);">Сформировать Чек</button>
-                </div>
-                
-                <div class="send-instructions">
-                    Отправить по контактам, указанным в чеке
-                </div>
-            </div>
-        </section>
-
-        <footer class="quantum-footer scroll-reveal">
-            <p class="quantum-footer-text">© 2024 IT Services. Все права защищены. | Профессиональный ремонт ПК</p>
-        </footer>
+    <div class="input-group">
+      <label for="name">ФИО</label>
+      <input type="text" id="name" placeholder="Иванов Андрей Витальевич">
+      <div class="format-hint">Формат: Фамилия Имя Отчество</div>
     </div>
+    
+    <div class="input-group">
+      <label for="phone">Телефон</label>
+      <input type="tel" id="phone" placeholder="+7 (___) ___-__-__">
+      <div class="format-hint">Формат: +7 (XXX) XXX-XX-XX</div>
+    </div>
+    
+    <button id="confirmBtn">Подтвердить заказ</button>
+  </div>
+  <div class="receipt-section" id="receiptSection">
+    <div id="receipt"></div>
+  </div>
+</div>
+</div>
 
-    <script>
-        // Услуги ПК с обновленными ценами
-        const services = [
-            // Сборка
-            {
-                id: 1,
-                name: "Сборка ПК",
-                description: "Полная сборка компьютера под ваши задачи - от бюджетных до игровых конфигураций",
-                price: 2000,
-                category: "Сборка"
-            },
-            
-            // Ремонт
-            {
-                id: 2,
-                name: "Диагностика ПК",
-                description: "Комплексная диагностика неисправностей компьютера",
-                price: 400,
-                category: "Ремонт"
-            },
-            {
-                id: 3,
-                name: "Замена комплектующих",
-                description: "Замена оперативной памяти, видеокарты, процессора и других компонентов",
-                price: 800,
-                category: "Ремонт"
-            },
-            {
-                id: 9,
-                name: "Восстановление данных",
-                description: "Восстановление потерянных данных с жестких дисков",
-                price: 1200,
-                category: "Ремонт"
-            },
-            
-            // Обслуживание
-            {
-                id: 4,
-                name: "Чистка от пыли",
-                description: "Полная чистка системного блока, замена термопасты",
-                price: 600,
-                category: "Обслуживание"
-            },
-            {
-                id: 5,
-                name: "Установка Windows",
-                description: "Установка и настройка операционной системы Windows",
-                price: 900,
-                category: "Обслуживание"
-            },
-            {
-                id: 6,
-                name: "Установка драйверов",
-                description: "Установка и обновление драйверов для всех компонентов ПК",
-                price: 250,
-                category: "Обслуживание"
-            },
-            {
-                id: 7,
-                name: "Установка антивируса",
-                description: "Установка и настройка антивирусного ПО",
-                price: 50,
-                category: "Обслуживание"
-            },
-            {
-                id: 8,
-                name: "Оптимизация системы",
-                description: "Ускорение работы ПК, очистка мусора, настройка автозагрузки",
-                price: 700,
-                category: "Обслуживание"
-            },
-            {
-                id: 10,
-                name: "Удаление вирусов",
-                description: "Полная очистка системы от вирусов и вредоносного ПО",
-                price: 800,
-                category: "Обслуживание"
-            },
-            {
-                id: 11,
-                name: "Настройка интернета",
-                description: "Настройка подключения к интернету и сетевых параметров",
-                price: 400,
-                category: "Обслуживание"
-            },
-            {
-                id: 12,
-                name: "Обновление ПО",
-                description: "Обновление операционной системы и установленных программ",
-                price: 500,
-                category: "Обслуживание"
-            },
-            
-            // Доп. опция
-            {
-                id: 13,
-                name: "Доп. Опция",
-                description: "все подробности укажите в дополнительных пожеланиях",
-                price: 0,
-                category: "Дополнительно"
-            }
-        ];
+<script>
+// Услуги ПК с обновленными ценами
+const services = [
+    // Сборка
+    {
+        id: 1,
+        name: "Сборка ПК",
+        description: "Полная сборка компьютера под ваши задачи - от бюджетных до игровых конфигураций",
+        price: 2000,
+        category: "Сборка",
+        icon: "🖥️"
+    },
+    
+    // Ремонт
+    {
+        id: 2,
+        name: "Диагностика ПК",
+        description: "Комплексная диагностика неисправностей компьютера",
+        price: 400,
+        category: "Ремонт",
+        icon: "🔍"
+    },
+    {
+        id: 3,
+        name: "Замена комплектующих",
+        description: "Замена оперативной памяти, видеокарты, процессора и других компонентов",
+        price: 800,
+        category: "Ремонт",
+        icon: "🔧"
+    },
+    {
+        id: 9,
+        name: "Восстановление данных",
+        description: "Восстановление потерянных данных с жестких дисков",
+        price: 1200,
+        category: "Ремонт",
+        icon: "💾"
+    },
+    
+    // Обслуживание
+    {
+        id: 4,
+        name: "Чистка от пыли",
+        description: "Полная чистка системного блока, замена термопасты",
+        price: 600,
+        category: "Обслуживание",
+        icon: "🧹"
+    },
+    {
+        id: 5,
+        name: "Установка Windows",
+        description: "Установка и настройка операционной системы Windows",
+        price: 900,
+        category: "Обслуживание",
+        icon: "🪟"
+    },
+    {
+        id: 6,
+        name: "Установка драйверов",
+        description: "Установка и обновление драйверов для всех компонентов ПК",
+        price: 250,
+        category: "Обслуживание",
+        icon: "💿"
+    },
+    {
+        id: 7,
+        name: "Установка антивируса",
+        description: "Установка и настройка антивирусного ПО",
+        price: 50,
+        category: "Обслуживание",
+        icon: "🛡️"
+    },
+    {
+        id: 8,
+        name: "Оптимизация системы",
+        description: "Ускорение работы ПК, очистка мусора, настройка автозагрузки",
+        price: 700,
+        category: "Обслуживание",
+        icon: "⚡"
+    },
+    {
+        id: 10,
+        name: "Удаление вирусов",
+        description: "Полная очистка системы от вирусов и вредоносного ПО",
+        price: 800,
+        category: "Обслуживание",
+        icon: "🧪"
+    },
+    {
+        id: 11,
+        name: "Настройка интернета",
+        description: "Настройка подключения к интернету и сетевых параметров",
+        price: 400,
+        category: "Обслуживание",
+        icon: "🌐"
+    },
+    {
+        id: 12,
+        name: "Обновление ПО",
+        description: "Обновление операционной системы и установленных программ",
+        price: 500,
+        category: "Обслуживание",
+        icon: "🔄"
+    },
+    
+    // Доп. опция
+    {
+        id: 13,
+        name: "Доп. Опция",
+        description: "все подробности укажите в дополнительных пожеланиях",
+        price: 0,
+        category: "Дополнительно",
+        icon: "➕"
+    }
+];
 
-        let cart = [];
-        let customRequests = '';
-        let currentCategory = 'all';
-
-        // Рендер услуг по категории
-        function renderServices(category = 'all') {
-            const container = document.getElementById('servicesContainer');
-            
-            let filteredServices = services;
-            if (category !== 'all') {
-                filteredServices = services.filter(service => service.category === category);
-            }
-            
-            let html = '';
-            if (filteredServices.length === 0) {
-                html = `<div class="category-section">
-                    <h3 class="category-title">${category === 'all' ? 'Все услуги' : category}</h3>
-                    <p style="text-align: center; opacity: 0.6; padding: 40px 0;">Нет услуг в этой категории</p>
-                </div>`;
-            } else {
-                html = `<div class="category-section">
-                    <h3 class="category-title">${category === 'all' ? 'Все услуги' : category}</h3>
-                    <div class="quantum-grid-layout">`;
-                
-                filteredServices.forEach(service => {
-                    html += `
-                        <div class="quantum-card">
-                            <h3>${service.name}</h3>
-                            <p>${service.description}</p>
-                            <div class="price">${service.price} ₽</div>
-                            ${service.price < 800 ? '<div class="discount-badge">Специальная цена</div>' : ''}
-                            <button class="quantum-button" onclick="addToCart(${service.id})">Добавить в заказ</button>
-                        </div>
-                    `;
-                });
-                
-                html += '</div></div>';
-            }
-            
-            container.innerHTML = html;
-        }
-
-        // Показать категорию
-        function showCategory(category) {
-            currentCategory = category;
-            
-            // Обновляем активные табы
-            const tabs = document.querySelectorAll('.category-tab');
-            tabs.forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            renderServices(category);
-        }
-
-        // Добавить в корзину
-        function addToCart(serviceId) {
-            const service = services.find(s => s.id === serviceId);
-            if (service) {
-                cart.push(service);
-                updateCart();
-            }
-        }
-
-        // Обновить корзину
-        function updateCart() {
-            const cartItems = document.getElementById('cartItems');
-            const totalElement = document.getElementById('cartTotal');
-            
-            if (cart.length === 0) {
-                cartItems.innerHTML = '<p style="text-align: center; opacity: 0.6; padding: 40px 0;">Корзина пуста. Выберите услуги для заказа.</p>';
-                totalElement.textContent = 'ИТОГО: 0 ₽';
-                return;
-            }
-            
-            let cartHTML = '';
-            let total = 0;
-            
-            cart.forEach((item, index) => {
-                cartHTML += `
-                    <div class="cart-item">
-                        <div>
-                            <strong>${item.name}</strong><br>
-                            <small style="opacity: 0.7;">${item.category}</small>
-                        </div>
-                        <div style="text-align: right;">
-                            <div>${item.price} ₽</div>
-                            <button onclick="removeFromCart(${index})" style="background: #dc3545; border: none; color: white; padding: 5px 12px; border-radius: 20px; cursor: pointer; margin-top: 5px; font-size: 0.8rem;">Удалить</button>
-                        </div>
-                    </div>
-                `;
-                total += item.price;
-            });
-            
-            cartItems.innerHTML = cartHTML;
-            totalElement.textContent = `ИТОГО: ${total} ₽`;
-        }
-
-        // Удалить из корзины
-        function removeFromCart(index) {
-            cart.splice(index, 1);
+// Генерация карточек услуг
+function renderServices() {
+    const servicesContainer = document.getElementById('servicesContainer');
+    servicesContainer.innerHTML = '';
+    
+    services.forEach(service => {
+        const card = document.createElement('div');
+        card.className = 'service-card';
+        card.dataset.category = service.category;
+        card.dataset.title = service.name;
+        card.dataset.price = service.price;
+        
+        card.innerHTML = `
+            <div class="service-icon">${service.icon}</div>
+            <div class="service-title">${service.name}</div>
+            <div class="service-desc">${service.description}</div>
+            <div class="service-price">${service.price > 0 ? 'от ' + service.price + ' ₽' : 'Цена договорная'}</div>
+            <button class="add-btn">Добавить в чек</button>
+        `;
+        
+        servicesContainer.appendChild(card);
+    });
+    
+    // Обновляем обработчики для кнопок добавления
+    document.querySelectorAll(".add-btn").forEach(btn => {
+        btn.onclick = () => {
+            const card = btn.closest(".service-card");
+            const item = {
+                title: card.dataset.title,
+                price: +card.dataset.price
+            };
+            cart.push(item);
             updateCart();
-        }
-
-        // Очистить корзину
-        function clearCart() {
-            cart = [];
-            updateCart();
-        }
-
-        // Сгенерировать чек
-        function generateBill() {
-            if (cart.length === 0) {
-                alert('Корзина пуста! Добавьте услуги в заказ.');
-                return;
-            }
-            
-            // Получаем текущую дату и время
-            const now = new Date();
-            const date = now.toLocaleDateString('ru-RU');
-            const time = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-            
-            // Получаем дополнительные пожелания
-            customRequests = document.getElementById('customRequests').value;
-            
-            // Формируем содержимое чека
-            let billContent = 'СЧЕТ НА УСЛУГИ\n\n';
-            billContent += `Дата: ${date}\n`;
-            billContent += `Время: ${time}\n`;
-            billContent += '========================================\n\n';
-            
-            let total = 0;
-            cart.forEach(item => {
-                billContent += `${item.name}\n`;
-                billContent += `Цена: ${item.price} ₽\n\n`;
-                total += item.price;
-            });
-            
-            if (customRequests) {
-                billContent += 'Дополнительные пожелания:\n';
-                billContent += `${customRequests}\n\n`;
-            }
-            
-            billContent += '========================================\n';
-            billContent += `ОБЩАЯ СУММА: ${total} ₽\n\n`;
-            billContent += 'Спасибо за ваш заказ в IT Services!\n';
-            billContent += 'Для уточнения деталов обращайтесь:\n';
-            billContent += 'Telegram: @Fr1nson\n';
-            billContent += 'Email: colamatvey@ya.ru';
-
-            // Создаем и скачиваем файл
-            const blob = new Blob([billContent], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `счет_на_услуги_${date.replace(/\./g, '-')}_${time.replace(/:/g, '-')}.txt`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-
-        // Создание частиц
-        function createParticles() {
-            const container = document.body;
-            for (let i = 0; i < 50; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                
-                const startX = Math.random() * window.innerWidth;
-                const startY = Math.random() * window.innerHeight;
-                
-                const tx = (Math.random() - 0.5) * 200;
-                const ty = (Math.random() - 0.5) * 200;
-                
-                particle.style.left = `${startX}px`;
-                particle.style.top = `${startY}px`;
-                particle.style.setProperty('--tx', `${tx}px`);
-                particle.style.setProperty('--ty', `${ty}px`);
-                
-                const colors = ['#00ff88', '#ff00c8', '#ff8800', '#00e0ff'];
-                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-                
-                particle.style.animationDelay = `${Math.random() * 6}s`;
-                particle.style.animationDuration = `${3 + Math.random() * 6}s`;
-                
-                container.appendChild(particle);
-            }
-        }
-
-        // Анимация при скролле
-        function revealOnScroll() {
-            const elements = document.querySelectorAll('.scroll-reveal');
-            elements.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-                const elementVisible = 150;
-                
-                if (elementTop < window.innerHeight - elementVisible) {
-                    element.classList.add('visible');
-                }
-            });
-        }
-
-        // Навигация
-        function scrollToSection(sectionId) {
-            const section = document.getElementById(sectionId);
-            if (section) {
-                section.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
-        // Инициализация
-        document.addEventListener('DOMContentLoaded', function() {
-            renderServices('all');
-            createParticles();
-            window.addEventListener('scroll', revealOnScroll);
-            revealOnScroll();
-            
-            const buttons = document.querySelectorAll('.quantum-button');
-            buttons.forEach(button => {
-                button.addEventListener('click', function() {
-                    this.style.transform = 'scale(0.95)';
-                    setTimeout(() => {
-                        this.style.transform = '';
-                    }, 150);
-                });
-            });
+        };
+    });
+    
+    // Обновляем наблюдатель для анимации карточек
+    const cards = document.querySelectorAll(".service-card");
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if(e.isIntersecting) e.target.classList.add("visible");
         });
+    }, {threshold: .2});
+    cards.forEach(c => observer.observe(c));
+}
 
-        // Интерактивный фон
-        document.addEventListener('mousemove', (e) => {
-            const x = e.clientX / window.innerWidth;
-            const y = e.clientY / window.innerHeight;
+// частицы
+const particlesContainer=document.getElementById("particles");
+for(let i=0;i<40;i++){
+let p=document.createElement("div");
+p.classList.add("particle");
+p.style.left=Math.random()*100+"vw";
+p.style.animationDuration=10+Math.random()*15+"s";
+p.style.animationDelay=Math.random()*10+"s";
+p.style.background=`radial-gradient(circle,${['#00ff88','#ff00c8','#00e0ff'][Math.floor(Math.random()*3)]},transparent)`;
+particlesContainer.appendChild(p);
+}
+
+// категории
+function showCategory(cat){
+document.querySelectorAll(".category-tab").forEach(t=>t.classList.remove("active"));
+document.querySelector(`.category-tab[onclick="showCategory('${cat}')"]`).classList.add("active");
+document.querySelectorAll(".service-card").forEach(card=>{
+card.style.display=(cat==='all'||card.dataset.category===cat)?'block':'none';
+});
+}
+
+// корзина
+let cart=[];
+const cartBtn=document.getElementById("cartBtn");
+const cartPanel=document.getElementById("cartPanel");
+const closeCart=document.getElementById("closeCart");
+const cartItems=document.getElementById("cartItems");
+const cartCount=document.getElementById("cartCount");
+const total=document.getElementById("total");
+const customerNotes = document.getElementById("customerNotes");
+
+function updateCart(){
+cartItems.innerHTML='';
+cart.forEach((item,i)=>{
+let div=document.createElement("div");
+div.classList.add("cart-item");
+div.innerHTML=`<span>${item.title}</span><span>${item.price > 0 ? item.price + ' ₽' : 'договорная'} <span class='remove' data-index='${i}'>✖</span></span>`;
+cartItems.appendChild(div);
+});
+cartCount.textContent=cart.length;
+let sum=cart.reduce((s,i)=>s+i.price,0);
+total.textContent=`Итого: ${sum} ₽`;
+document.querySelectorAll(".remove").forEach(r=>r.onclick=()=>{cart.splice(r.dataset.index,1);updateCart();});
+}
+
+cartBtn.onclick=()=>cartPanel.classList.add("open");
+closeCart.onclick=()=>cartPanel.classList.remove("open");
+
+// оформление заказа
+const modal=document.getElementById("modal");
+const orderBtn=document.getElementById("orderBtn");
+const confirmBtn=document.getElementById("confirmBtn");
+const receipt=document.getElementById("receipt");
+const orderForm = document.getElementById("orderForm");
+const receiptSection = document.getElementById("receiptSection");
+
+orderBtn.onclick=()=>{
+if (cart.length === 0) {
+  alert("Добавьте хотя бы одну услугу в чек!");
+  return;
+}
+// Сбрасываем состояние модального окна
+orderForm.classList.remove("hidden");
+receiptSection.classList.remove("visible");
+modal.classList.add("open");
+};
+
+// Функция для генерации текста чека в нужном формате
+function generateReceiptText(name, phone, notes, cart) {
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('ru-RU');
+    const timeStr = now.toLocaleTimeString('ru-RU', {hour: '2-digit', minute:'2-digit'});
+    
+    let receiptText = `СЧЕТ НА УСЛУГИ\n\n`;
+    receiptText += `Дата: ${dateStr}\n`;
+    receiptText += `Время: ${timeStr}\n`;
+    receiptText += "========================================\n\n";
+    
+    let total = 0;
+    cart.forEach(item => {
+        receiptText += `${item.title}\n`;
+        receiptText += `Цена: ${item.price > 0 ? item.price + ' ₽' : 'договорная'}\n\n`;
+        total += item.price;
+    });
+    
+    if (notes) {
+        receiptText += `Дополнительные пожелания:\n${notes}\n\n`;
+    }
+    
+    receiptText += "========================================\n";
+    receiptText += `ОБЩАЯ СУММА: ${total} ₽\n\n`;
+    receiptText += `Спасибо за ваш заказ в IT Services!\n`;
+    receiptText += `Для уточнения деталей обращайтесь:\n`;
+    receiptText += `Тел: +7 (927) 246-54-87\n`;
+    receiptText += `Telegram: @Fr1nson\n`;
+    receiptText += `Email: colamatvey@ya.ru`;
+    
+    return receiptText;
+}
+
+// Функция для скачивания текста как файла
+function downloadTextAsFile(text, filename) {
+    const blob = new Blob([text], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+// Функция для создания красивого HTML чека
+function createBeautifulReceipt(name, phone, notes, cart) {
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('ru-RU');
+    const timeStr = now.toLocaleTimeString('ru-RU', {hour: '2-digit', minute:'2-digit'});
+    let total = cart.reduce((sum, item) => sum + item.price, 0);
+    
+    let receiptHTML = `
+        <div class="receipt-container">
+            <div class="receipt-header">
+                <div class="receipt-title">IT SERVICES</div>
+                <div class="receipt-subtitle">Счет на услуги</div>
+            </div>
             
-            document.body.style.backgroundPosition = `${x * 100}% ${y * 100}%`;
-        });
-    </script>
+            <div class="receipt-info">
+                <div>Дата: ${dateStr}</div>
+                <div>Время: ${timeStr}</div>
+            </div>
+            
+            <div class="receipt-info">
+                <div>Клиент: ${name}</div>
+                <div>Телефон: ${phone}</div>
+            </div>
+            
+            <div class="receipt-divider"></div>
+            
+            <div class="receipt-items">
+    `;
+    
+    cart.forEach(item => {
+        receiptHTML += `
+            <div class="receipt-item">
+                <div class="item-name">${item.title}</div>
+                <div class="item-price">${item.price > 0 ? item.price + ' ₽' : 'договорная'}</div>
+            </div>
+        `;
+    });
+    
+    receiptHTML += `</div>`;
+    
+    if (notes) {
+        receiptHTML += `
+            <div class="receipt-notes">
+                <div class="notes-title">Дополнительные пожелания:</div>
+                <div class="notes-content">${notes}</div>
+            </div>
+        `;
+    }
+    
+    receiptHTML += `
+            <div class="receipt-divider"></div>
+            
+            <div class="receipt-total">
+                <div>ОБЩАЯ СУММА:</div>
+                <div>${total} ₽</div>
+            </div>
+            
+            <div class="receipt-footer">
+                Спасибо за ваш заказ в IT Services!<br>
+                Для уточнения деталей обращайтесь:<br>
+                Тел: +7 (927) 246-54-87 • Telegram: @Fr1nson<br>
+                Email: colamatvey@ya.ru
+            </div>
+        </div>
+        
+        <button class="telegram-btn" id="telegramBtn">
+            <span>📤</span> Отправить чек в Telegram
+        </button>
+        
+        <div class="success-message">
+            Чек автоматически скачан! Пожалуйста, отправьте его мне в Telegram для подтверждения заказа.
+        </div>
+        
+        <div class="instruction">
+            После отправки чека я свяжусь с вами для уточнения деталей в течение 30 минут
+        </div>
+    `;
+    
+    return receiptHTML;
+}
+
+// Улучшенная маска для телефона
+function initPhoneMask() {
+    const phoneInput = document.getElementById('phone');
+    
+    phoneInput.addEventListener('focus', function() {
+        if (!this.value) {
+            this.value = '+7 (';
+        }
+    });
+    
+    phoneInput.addEventListener('blur', function() {
+        if (this.value === '+7 (') {
+            this.value = '';
+        }
+    });
+    
+    phoneInput.addEventListener('input', function(e) {
+        const input = e.target;
+        let value = input.value.replace(/\D/g, '');
+        
+        // Если пользователь начал ввод с 7 или 8, заменяем на +7
+        if (value.startsWith('7') || value.startsWith('8')) {
+            value = '7' + value.substring(1);
+        }
+        
+        // Если номер начинается не с 7, добавляем +7 в начало
+        if (!value.startsWith('7') && value.length > 0) {
+            value = '7' + value;
+        }
+        
+        // Форматируем номер
+        let formattedValue = '+7 (';
+        
+        if (value.length > 1) {
+            formattedValue += value.substring(1, 4);
+        }
+        
+        if (value.length >= 4) {
+            formattedValue += ') ' + value.substring(4, 7);
+        }
+        
+        if (value.length >= 7) {
+            formattedValue += '-' + value.substring(7, 9);
+        }
+        
+        if (value.length >= 9) {
+            formattedValue += '-' + value.substring(9, 11);
+        }
+        
+        input.value = formattedValue;
+    });
+    
+    // Обработка клавиш Backspace и Delete для удобного удаления
+    phoneInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Backspace') {
+            const cursorPosition = e.target.selectionStart;
+            
+            // Если курсор находится сразу после символа маски, перемещаем его назад
+            if (cursorPosition === 7 || cursorPosition === 11 || cursorPosition === 14) {
+                e.preventDefault();
+                e.target.setSelectionRange(cursorPosition - 1, cursorPosition - 1);
+            }
+        }
+    });
+}
+
+confirmBtn.onclick=()=>{
+let name=document.getElementById("name").value.trim();
+let phone=document.getElementById("phone").value.trim();
+let notes = customerNotes.value.trim();
+if(!name||!phone||cart.length===0){alert("Заполните все поля и добавьте услуги!");return;}
+
+// Проверка формата телефона
+const phoneRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
+if (!phoneRegex.test(phone)) {
+    alert("Пожалуйста, введите корректный номер телефона в формате +7 (XXX) XXX-XX-XX");
+    return;
+}
+
+// Проверка формата ФИО (должно быть минимум 2 слова)
+const nameWords = name.split(' ').filter(word => word.length > 0);
+if (nameWords.length < 2) {
+    alert("Пожалуйста, введите Фамилию и Имя (минимум два слова)");
+    return;
+}
+
+let receiptText = generateReceiptText(name, phone, notes, cart);
+
+// Создаем имя файла с датой и временем
+const now = new Date();
+const dateStr = now.toLocaleDateString('ru-RU').replace(/\./g, '-');
+const timeStr = now.toLocaleTimeString('ru-RU', {hour: '2-digit', minute:'2-digit'}).replace(/:/g, '-');
+const filename = `Чек_IT_Services_${dateStr}_${timeStr}.txt`;
+
+// Автоматически скачиваем чек
+downloadTextAsFile(receiptText, filename);
+
+// Создаем красивый HTML чек для отображения
+let beautifulReceiptHTML = createBeautifulReceipt(name, phone, notes, cart);
+receipt.innerHTML = beautifulReceiptHTML;
+
+// Показываем чек и скрываем форму
+orderForm.classList.add("hidden");
+receiptSection.classList.add("visible");
+
+// Добавляем обработчик для кнопки Telegram
+document.getElementById('telegramBtn').onclick = function() {
+    const telegramUrl = `https://t.me/Fr1nson?text=${encodeURIComponent(receiptText)}`;
+    window.open(telegramUrl, '_blank');
+};
+
+// Очистка корзины и формы
+cart = [];
+updateCart();
+customerNotes.value = "";
+document.getElementById("name").value = "";
+document.getElementById("phone").value = "";
+cartPanel.classList.remove("open");
+};
+
+// Закрытие модального окна
+modal.onclick=e=>{if(e.target===modal)modal.classList.remove("open");};
+
+// Инициализация при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+    renderServices();
+    initPhoneMask();
+});
+</script>
 </body>
 </html>
