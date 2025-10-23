@@ -170,6 +170,8 @@ border:1px solid rgba(0,255,136,.3);backdrop-filter:blur(20px);
 position:relative;
 animation:fadeIn .4s ease;
 box-shadow: 0 0 40px rgba(0,255,136,.2);
+max-height: 90vh;
+overflow-y: auto;
 }
 @keyframes fadeIn{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
 .modal-content h3{text-align:center;margin-bottom:15px}
@@ -333,6 +335,29 @@ transition: all 0.3s;
   box-shadow: 0 5px 15px rgba(0,136,204,.3);
 }
 
+.copy-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 20px;
+  background: rgba(26,26,46,.8);
+  color: var(--plasma-white);
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s;
+  border: 1px solid rgba(0,255,136,.3);
+}
+
+.copy-btn:hover {
+  background: rgba(26,26,46,1);
+  transform: translateY(-2px);
+}
+
 .success-message {
   text-align: center;
   margin-top: 15px;
@@ -376,7 +401,81 @@ transition: all 0.3s;
   margin-left: 5px;
 }
 
-@media(max-width:480px){.quantum-title{font-size:3rem}}
+.steps {
+  text-align: left;
+  margin: 15px 0;
+  padding: 15px;
+  background: rgba(10,10,20,.5);
+  border-radius: 10px;
+  border: 1px solid rgba(0,255,136,.2);
+}
+
+.step {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.step-number {
+  background: var(--quantum-blue);
+  color: var(--void-black);
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.step-text {
+  flex: 1;
+}
+
+/* Стили для модального окна с чеком */
+.modal.receipt-mode .modal-content {
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* Индикатор прокрутки */
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: rgba(10,10,20,.5);
+  border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: var(--quantum-blue);
+  border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background: var(--nebula-purple);
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+  .modal.receipt-mode .modal-content {
+    max-width: 95%;
+    padding: 20px;
+  }
+}
+
+@media(max-width:480px){
+  .quantum-title{font-size:3rem}
+  .modal-content {
+    padding: 20px;
+    width: 95%;
+  }
+}
 </style>
 </head>
 <body>
@@ -659,6 +758,7 @@ const confirmBtn=document.getElementById("confirmBtn");
 const receipt=document.getElementById("receipt");
 const orderForm = document.getElementById("orderForm");
 const receiptSection = document.getElementById("receiptSection");
+const modalContent = document.querySelector('.modal-content');
 
 orderBtn.onclick=()=>{
 if (cart.length === 0) {
@@ -668,6 +768,7 @@ if (cart.length === 0) {
 // Сбрасываем состояние модального окна
 orderForm.classList.remove("hidden");
 receiptSection.classList.remove("visible");
+modal.classList.remove("receipt-mode");
 modal.classList.add("open");
 };
 
@@ -717,8 +818,25 @@ function downloadTextAsFile(text, filename) {
     URL.revokeObjectURL(url);
 }
 
+// Функция для копирования текста в буфер обмена
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        alert('Текст чека скопирован в буфер обмена!');
+    }).catch(err => {
+        console.error('Ошибка копирования: ', err);
+        // Fallback для старых браузеров
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        alert('Текст чека скопирован в буфер обмена!');
+    });
+}
+
 // Функция для создания красивого HTML чека
-function createBeautifulReceipt(name, phone, notes, cart) {
+function createBeautifulReceipt(name, phone, notes, cart, receiptText) {
     const now = new Date();
     const dateStr = now.toLocaleDateString('ru-RU');
     const timeStr = now.toLocaleTimeString('ru-RU', {hour: '2-digit', minute:'2-digit'});
@@ -782,8 +900,27 @@ function createBeautifulReceipt(name, phone, notes, cart) {
             </div>
         </div>
         
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-text">Нажмите кнопку ниже, чтобы скопировать текст чека в буфер обмена</div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-text">Нажмите кнопку "Открыть Telegram", чтобы перейти в наш чат</div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-text">Вставьте текст чека (Ctrl+V) и отправьте сообщение</div>
+            </div>
+        </div>
+        
+        <button class="copy-btn" id="copyBtn">
+            <span>📋</span> Скопировать текст чека
+        </button>
+        
         <button class="telegram-btn" id="telegramBtn">
-            <span>📤</span> Отправить чек в Telegram
+            <span>📤</span> Открыть Telegram
         </button>
         
         <div class="success-message">
@@ -864,6 +1001,13 @@ function initPhoneMask() {
     });
 }
 
+// Функция для отправки в Telegram
+function openTelegram() {
+    // Открываем прямую ссылку на ваш аккаунт в Telegram
+    const telegramUrl = `https://t.me/Fr1nson`;
+    window.open(telegramUrl, '_blank');
+}
+
 confirmBtn.onclick=()=>{
 let name=document.getElementById("name").value.trim();
 let phone=document.getElementById("phone").value.trim();
@@ -896,17 +1040,22 @@ const filename = `Чек_IT_Services_${dateStr}_${timeStr}.txt`;
 downloadTextAsFile(receiptText, filename);
 
 // Создаем красивый HTML чек для отображения
-let beautifulReceiptHTML = createBeautifulReceipt(name, phone, notes, cart);
+let beautifulReceiptHTML = createBeautifulReceipt(name, phone, notes, cart, receiptText);
 receipt.innerHTML = beautifulReceiptHTML;
 
 // Показываем чек и скрываем форму
 orderForm.classList.add("hidden");
 receiptSection.classList.add("visible");
+modal.classList.add("receipt-mode");
+
+// Добавляем обработчик для кнопки копирования
+document.getElementById('copyBtn').onclick = function() {
+    copyToClipboard(receiptText);
+};
 
 // Добавляем обработчик для кнопки Telegram
 document.getElementById('telegramBtn').onclick = function() {
-    const telegramUrl = `https://t.me/Fr1nson?text=${encodeURIComponent(receiptText)}`;
-    window.open(telegramUrl, '_blank');
+    openTelegram();
 };
 
 // Очистка корзины и формы
